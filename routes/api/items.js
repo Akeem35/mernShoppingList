@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 
 // @route   POST api/items
 // @desc    Create an item 
-// @access  Public
+// @access  Private
 router.post('/', (req, res) => {
   const newItem = new Item({
     name: req.body.name
@@ -26,7 +26,7 @@ router.post('/', (req, res) => {
 
 // @route   DELETE api/items
 // @desc    Delete An item 
-// @access  Public
+// @access  Private
 router.delete('/:id', (req, res) => {
   Item.findById(req.params.id)
     .then(item => item.remove().then(() => res.json({ success: true })))
