@@ -52,7 +52,7 @@ class ItemModal extends Component {
         >Add Item</Button>
 
         <Modal isOpen={this.state.modal} toggle={this.toogle} >
-          <ModalHeader toogle={this.toogle}>Add To Shopping List</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Add To Shopping List</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.onSubmit}>
               <FormGroup>

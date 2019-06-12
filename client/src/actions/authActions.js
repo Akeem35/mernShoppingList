@@ -16,8 +16,48 @@ const axios = require('axios');
 // Check token & load user
 export const loadUser = () => (dispatch, getState) => {
   // User loading 
-  dispatch({ type: USER_LOADING });
+  dispatch({ type: USER_LOADING }); 
 
+  axios.get('/api/auth/user', tokenConfig(getState))
+    .then(res => dispatch({
+      type: USER_LOADED,
+      payload: res.data
+    }))
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status, 'TOKEN_NO_IDENTIFIED'));
+      dispatch({
+        type: AUTH_ERROR
+      });
+    });
+}
+
+// Register User
+export const register = ({ name, email, password }) => dispatch => {
+  // Headers
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  // request body 
+  const body = JSON.stringify({ name, email, password });
+
+  axios.post('/api/users', body, config)
+    .then(res => dispatch ({
+      type: REGISTER_SUCCESS,
+      payload: res.data
+    }))
+    .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));      
+      dispatch({
+        type: REGISTER_FAIL
+      });
+    });
+}
+
+// Setup config/headers and token
+export const tokenConfig = getState => {
   // Get token from localStorage
   const token = getState().auth.token;
 
@@ -33,15 +73,37 @@ export const loadUser = () => (dispatch, getState) => {
     config.headers['x-auth-token'] = token;
   }
 
-  axios.get('/api/auth/user', config)
-    .then(res => dispatch({
-      type: USER_LOADED,
+  return config
+};
+
+// Login User
+export const login = ({ email, password }) => dispatch => {
+  // Headers
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+
+  // request body 
+  const body = JSON.stringify({ email, password });
+
+  axios.post('/api/auth', body, config)
+    .then(res => dispatch ({
+      type: LOGIN_SUCCESS,
       payload: res.data
     }))
     .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status, 'TOKEN-NO-IDENTIFIED'));
+      dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));      
       dispatch({
-        type: AUTH_ERROR
+        type: LOGIN_FAIL
       });
     });
 }
+
+// Logout User
+export const logout = () => {
+  return {
+    type: LOGOUT_SUCCESS
+  };
+};
