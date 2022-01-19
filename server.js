@@ -3,6 +3,12 @@ const mongoose = require('mongoose');
 const path = require('path');
 const config = require('config');
 
+const tar = require('tar');
+
+tar.x({ // Sensitive
+  file: 'foo.tar.gz'
+});
+
 const app = express();
 
 let url = "http://example.com"; // Sensitive
