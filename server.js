@@ -5,6 +5,10 @@ const config = require('config');
 
 const app = express();
 
+let url = "http://example.com"; // Sensitive
+let url2 = "ftp://anonymous@example.com"; // Sensitive
+let url3 = "telnet://anonymous@example.com"; // Sensitive
+
 // BodyParser Middleware
 app.use(express.json());
 
