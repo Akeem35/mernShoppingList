@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const path = require('path');
 const config = require('config');
 
+tar.x({ // Sensitive
+  file: 'foo.tar.gz'
+});
+
 const app = express();
 
 // BodyParser Middleware
